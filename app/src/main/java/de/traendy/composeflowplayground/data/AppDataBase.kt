@@ -5,13 +5,20 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
-@Database(entities = arrayOf(Expanse::class), version = 1)
+@Database(
+    entities = [
+        Expanse::class,
+        Budget::class,
+    ],
+    version = 1,
+)
 abstract class AppDataBase : RoomDatabase() {
     abstract fun expanseDao(): ExpanseDao
+    abstract fun budgetDao(): BudgetDao
 
     companion object {
-        private var INSTANCE:AppDataBase? = null
-        fun create(context: Context?):AppDataBase {
+        private var INSTANCE: AppDataBase? = null
+        fun create(context: Context?): AppDataBase {
             if (INSTANCE == null && context == null) {
                 throw IllegalMonitorStateException("This method has to be provided with application context.")
             }

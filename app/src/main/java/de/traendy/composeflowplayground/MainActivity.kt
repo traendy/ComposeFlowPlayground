@@ -10,8 +10,10 @@ import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import de.traendy.composeflowplayground.data.Budget
 import de.traendy.composeflowplayground.data.Expanse
 import de.traendy.composeflowplayground.ui.theme.ComposeFlowPlaygroundTheme
 import de.traendy.composeflowplayground.ui.theme.ExpanseListViewModel
@@ -31,14 +33,16 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun ComposeFlowPlaygroundApp(expanseListViewModel: ExpanseListViewModel = viewModel()) {
-    val list: List<Expanse> by expanseListViewModel.list.observeAsState(emptyList())
+    val expanses: List<Expanse> by expanseListViewModel.expanseList.observeAsState(emptyList())
+    val budget: Budget by expanseListViewModel.budget.observeAsState(Budget(0, 0f))
     Scaffold(
         bottomBar = {
             ExpanseInput(expanseListViewModel::onItemAdded)
         },
         content = {
             Column(modifier = Modifier.height(620.dp)) {
-                ExpanseList(list, expanseListViewModel::onExpanseDelete)
+                BudgetView(budget = budget?: Budget(0, 0.0f))
+                ExpanseList(expanses, expanseListViewModel::onExpanseDelete)
             }
         },
     )
@@ -93,4 +97,19 @@ fun ExpanseListItem(expanse: Expanse, deleteExpanse: (Expanse) -> Unit) {
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun BudgetViewPreview(){
+    BudgetView(budget = Budget(0, 333.33f))
+}
+
+@Composable
+fun BudgetView(budget: Budget){
+    Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth().padding(horizontal = 16.dp, vertical = 8.dp)) {
+        Text("B: ")
+        Text(budget.amount.toString())
+    }
+
 }
