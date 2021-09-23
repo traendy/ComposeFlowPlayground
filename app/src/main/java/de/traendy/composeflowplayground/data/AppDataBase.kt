@@ -8,13 +8,11 @@ import androidx.room.RoomDatabase
 @Database(
     entities = [
         Expanse::class,
-        Budget::class,
     ],
     version = 1,
 )
 abstract class AppDataBase : RoomDatabase() {
     abstract fun expanseDao(): ExpanseDao
-    abstract fun budgetDao(): BudgetDao
 
     companion object {
         private var INSTANCE: AppDataBase? = null
@@ -26,7 +24,7 @@ abstract class AppDataBase : RoomDatabase() {
             INSTANCE = Room.databaseBuilder(
                 requireNotNull(context),
                 AppDataBase::class.java,
-                "database-name"
+                "database-na1me"
             ).build()
             return requireNotNull(INSTANCE)
         }
